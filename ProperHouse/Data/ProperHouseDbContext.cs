@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProperHouse.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ProperHouseDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ProperHouseDbContext(DbContextOptions<ProperHouseDbContext> options)
             : base(options)
         {
         }
