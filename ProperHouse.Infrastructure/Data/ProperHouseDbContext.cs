@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProperHouse.Data
+namespace ProperHouse.Infrastructure.Data
 {
     public class ProperHouseDbContext : IdentityDbContext
     {

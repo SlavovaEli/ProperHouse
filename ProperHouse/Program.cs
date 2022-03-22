@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProperHouse.Core.Constants;
-using ProperHouse.Data;
+using ProperHouse.Infrastructure.Data;
 using ProperHouse.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
