@@ -18,13 +18,15 @@ namespace ProperHouse.Infrastructure.Data
                 .HasOne(p => p.Category)
                 .WithMany(p => p.Properties)
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict);            
+
 
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Property> Properties { get; init; }
+        public DbSet<Property> Properties { get; set; }
 
-        public DbSet<Category> Categories { get; init; }
+        public DbSet<Category> Categories { get; set; }
+        
     }
 }

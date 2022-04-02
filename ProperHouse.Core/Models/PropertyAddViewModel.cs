@@ -21,7 +21,7 @@ namespace ProperHouse.Core.Models
         public string ImageUrl { get; init; }
 
         [Required]
-        [StringLength(30, MinimumLength = 2, ErrorMessage = "Town must be between {2} and {1} symbols!")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Town must be between {2} and {1} symbols!")]
         public string Town { get; init; }
 
         [Required]

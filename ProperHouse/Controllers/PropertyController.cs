@@ -2,34 +2,35 @@
 using ProperHouse.Core.Models;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
+using ProperHouse.Infrastructure.Data.Repositories;
 
 namespace ProperHouse.Controllers
 {
     public class PropertyController : Controller
     {
-        private readonly ProperHouseDbContext dbContext;
+        private readonly ApplicationDbRepository repo;
 
-        public PropertyController(ProperHouseDbContext _dbContext)
+        public PropertyController(ApplicationDbRepository _repo)
         {
-            dbContext = _dbContext;
+            repo = _repo;
         }
 
-        public IActionResult Add() => View();
+        //public IActionResult Add() => View();
 
-        /*public IActionResult Add() => View(new PropertyAddViewModel
+        public IActionResult Add() => View(new PropertyAddViewModel
         {
             Categories = GetPropertyCategories()
-        });*/
+        });
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Add(PropertyAddViewModel property)
         {
-            if(!dbContext.Categories.Any(c => c.Id == property.CategoryId))
+            if (!repo.All<Category>().Any(c => c.Id == property.CategoryId))
             {
                 ModelState.AddModelError(nameof(property.CategoryId), "Category does not exist");
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 property.Categories = GetPropertyCategories();
 
@@ -48,15 +49,15 @@ namespace ProperHouse.Controllers
                 ImageUrl = property.ImageUrl,
             };
 
-            dbContext.Add(newProperty);
-            dbContext.SaveChanges();
+            repo.AddAsync(newProperty);
+            repo.SaveChanges();
 
             return RedirectToAction("Index", "Home");
-        }
+        }*/
 
         private List<PropertyCategoryViewModel> GetPropertyCategories()
         {
-            return dbContext.Categories
+            return repo.All<Category>()
                 .Select(c => new PropertyCategoryViewModel
                 {
                     Name = c.Name,

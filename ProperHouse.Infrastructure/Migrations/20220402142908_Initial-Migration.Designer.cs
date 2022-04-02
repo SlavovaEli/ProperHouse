@@ -9,11 +9,11 @@ using ProperHouse.Infrastructure.Data;
 
 #nullable disable
 
-namespace ProperHouse.Infrastructure.Data.Migrations
+namespace ProperHouse.Infrastructure.Migrations
 {
     [DbContext(typeof(ProperHouseDbContext))]
-    [Migration("20220322225200_PropertiesAndCategoriesTables")]
-    partial class PropertiesAndCategoriesTables
+    [Migration("20220402142908_Initial-Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -262,8 +262,10 @@ namespace ProperHouse.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
+                    b.Property<string>("Floor")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -280,8 +282,8 @@ namespace ProperHouse.Infrastructure.Data.Migrations
 
                     b.Property<string>("Town")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

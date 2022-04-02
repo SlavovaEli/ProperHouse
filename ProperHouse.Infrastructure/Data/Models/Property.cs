@@ -21,20 +21,21 @@ namespace ProperHouse.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(1000)]
-        public string ImageUrl { get; set; }
-
+        public string ImageUrl { get; set; }    
+        
         [Required]
-        [MaxLength(30)]
+        [StringLength(50)]
         public string Town { get; set; }
-
+        
         [Required]
-        [MaxLength(50)]
+        [StringLength(50)]
         public string Quarter { get; set; }
 
         [Required]        
         public int Area { get; set; }
 
         [Required]
+        [StringLength(10)]
         public string Floor { get; set; }
 
         [Required]
