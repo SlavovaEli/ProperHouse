@@ -1,5 +1,4 @@
 ﻿using ProperHouse.Core.Models;
-using ProperHouse.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProperHouse.Core.Contracts
 {
-    public interface IPropertyService
+    public interface ICategoryService
     {
-        IList<PropertyListingViewModel> GetAllProperties();
+        IList<PropertyCategoryViewModel> GetPropertyCategories();
 
-        void AddProperty(Property property);
+        bool CategoryExists(int categoryId);
+        
     }
 }

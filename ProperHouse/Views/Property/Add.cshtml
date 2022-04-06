@@ -23,11 +23,17 @@
                 <div class="mb-3">
                     <label asp-for="CategoryId" class="form-label"></label>
                     <select asp-for="CategoryId" class="form-select" >
-                        @*@foreach(var category in Model.Categories)
+                        @foreach(var category in Model.Categories)
                         {
                             <option value="@category.Id">@category.Name</option>
-                        }*@
+                        }
                     </select>
+                    <span asp-validation-for="CategoryId" class="small text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Capacity" class="form-label"></label>
+                    <input asp-for="Capacity" class="form-control" placeholder="1, 2, 3...">
+                    <span asp-validation-for="Capacity" class="small text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Area" class="form-label"></label>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProperHouse.Infrastructure.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,6 +59,21 @@ namespace ProperHouse.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Owners",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Owners", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,8 +194,10 @@ namespace ProperHouse.Infrastructure.Migrations
                     Quarter = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Area = table.Column<int>(type: "int", nullable: false),
                     Floor = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,6 +206,33 @@ namespace ProperHouse.Infrastructure.Migrations
                         name: "FK_Properties_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Properties_Owners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owners",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -236,6 +280,16 @@ namespace ProperHouse.Infrastructure.Migrations
                 name: "IX_Properties_CategoryId",
                 table: "Properties",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_OwnerId",
+                table: "Properties",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_PropertyId",
+                table: "Reservations",
+                column: "PropertyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -256,7 +310,7 @@ namespace ProperHouse.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -265,7 +319,13 @@ namespace ProperHouse.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Properties");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
         }
     }
 }

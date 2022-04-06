@@ -9,10 +9,16 @@ namespace ProperHouse.Core.Models
 {
     public class PropertyAddViewModel
     {
+        [Required]
         [Display(Name ="Category")]
         public int CategoryId { get; init; }
 
-        public IList<PropertyCategoryViewModel> Categories { get; set; }
+        public IList<PropertyCategoryViewModel>? Categories { get; set; }
+
+        [Required]
+        [Range(1, 30)]
+        [Display(Name = "Number of guests")]
+        public int Capacity { get; set; }
 
         [Display(Name ="Image Url")]
         [Required]
@@ -29,7 +35,7 @@ namespace ProperHouse.Core.Models
         public string Quarter { get; init; }
         
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, 3000)]
         public int Area { get; init; }
         
         [Required]
@@ -37,6 +43,7 @@ namespace ProperHouse.Core.Models
         public string Floor { get; init; }
         
         [Required]
+        [Range(1, 100000)]
         public int Price { get; init; }
         
         [Required]

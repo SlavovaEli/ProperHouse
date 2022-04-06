@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProperHouse.Core.Constants;
+using ProperHouse.Core.Contracts;
+using ProperHouse.Core.Services;
 using ProperHouse.Infrastructure.Data;
+using ProperHouse.Infrastructure.Extensions;
 using ProperHouse.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +17,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ProperHouseDbContext>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
@@ -23,6 +30,8 @@ builder.Services.AddControllersWithViews()
     });
 
 var app = builder.Build();
+
+app.PrepareDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

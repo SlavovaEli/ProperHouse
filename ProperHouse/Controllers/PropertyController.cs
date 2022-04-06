@@ -1,38 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Models;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
-using ProperHouse.Infrastructure.Data.Repositories;
 
 namespace ProperHouse.Controllers
 {
     public class PropertyController : Controller
     {
-        private readonly ApplicationDbRepository repo;
+        private readonly ICategoryService categoryService;
 
-        public PropertyController(ApplicationDbRepository _repo)
+        private readonly IPropertyService propertyService;
+        
+
+        public PropertyController(IPropertyService _propertyService, ICategoryService _categoryService)
         {
-            repo = _repo;
+            categoryService = _categoryService;
+            propertyService = _propertyService;
         }
 
         //public IActionResult Add() => View();
 
         public IActionResult Add() => View(new PropertyAddViewModel
         {
-            Categories = GetPropertyCategories()
+            Categories = categoryService.GetPropertyCategories()
         });
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult Add(PropertyAddViewModel property)
         {
-            if (!repo.All<Category>().Any(c => c.Id == property.CategoryId))
+            if (categoryService.CategoryExists(property.CategoryId) == false)
             {
                 ModelState.AddModelError(nameof(property.CategoryId), "Category does not exist");
             }
 
             if (!ModelState.IsValid)
             {
-                property.Categories = GetPropertyCategories();
+                property.Categories = categoryService.GetPropertyCategories();
 
                 return View(property);
             }
@@ -42,6 +46,7 @@ namespace ProperHouse.Controllers
                 CategoryId = property.CategoryId,
                 Town = property.Town,
                 Quarter = property.Quarter,
+                Capacity = property.Capacity,
                 Area = property.Area,
                 Floor = property.Floor,
                 Price = property.Price,
@@ -49,21 +54,18 @@ namespace ProperHouse.Controllers
                 ImageUrl = property.ImageUrl,
             };
 
-            repo.AddAsync(newProperty);
-            repo.SaveChanges();
+            propertyService.AddProperty(newProperty);
 
-            return RedirectToAction("Index", "Home");
-        }*/
-
-        private List<PropertyCategoryViewModel> GetPropertyCategories()
-        {
-            return repo.All<Category>()
-                .Select(c => new PropertyCategoryViewModel
-                {
-                    Name = c.Name,
-                    Id = c.Id,
-                })
-                .ToList();
+            return RedirectToAction(nameof(All));
         }
+
+        public IActionResult All()
+        {
+            var properties = propertyService.GetAllProperties()
+                .OrderByDescending(p => p.Id);
+
+            return View(properties);
+        }
+
     }
 }
