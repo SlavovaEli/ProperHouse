@@ -48,5 +48,9 @@ namespace ProperHouse.Infrastructure.Data.Models
         public string Description { get; set; }
 
         public IList<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+        public int OwnerId { get; set; }
+
+        public Owner Owner { get; set; }
     }
 }

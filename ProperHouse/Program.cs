@@ -4,6 +4,7 @@ using ProperHouse.Core.Constants;
 using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Services;
 using ProperHouse.Infrastructure.Data;
+using ProperHouse.Infrastructure.Data.Models;
 using ProperHouse.Infrastructure.Extensions;
 using ProperHouse.ModelBinders;
 
@@ -15,7 +16,15 @@ builder.Services.AddDbContext<ProperHouseDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+
+    })
     .AddEntityFrameworkStores<ProperHouseDbContext>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();

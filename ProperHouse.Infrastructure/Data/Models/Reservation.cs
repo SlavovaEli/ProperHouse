@@ -19,9 +19,11 @@ namespace ProperHouse.Infrastructure.Data.Models
 
         [Required]
         public DateTime DateTo { get; set; }
+        
+        public string UserId { get; set; }
 
-        [Required]
-        public string UserId { get; set; }        
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
 
         [Required]
         public int PropertyId { get; set; }

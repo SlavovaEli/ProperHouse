@@ -12,8 +12,8 @@ using ProperHouse.Infrastructure.Data;
 namespace ProperHouse.Infrastructure.Migrations
 {
     [DbContext(typeof(ProperHouseDbContext))]
-    [Migration("20220406120522_initial-migration")]
-    partial class initialmigration
+    [Migration("20220409112822_Initial-migration")]
+    partial class Initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,10 @@ namespace ProperHouse.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -139,6 +143,8 @@ namespace ProperHouse.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -264,9 +270,12 @@ namespace ProperHouse.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Owners");
                 });
@@ -302,7 +311,7 @@ namespace ProperHouse.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("OwnerId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -346,13 +355,33 @@ namespace ProperHouse.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
 
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
                     b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -406,6 +435,15 @@ namespace ProperHouse.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.Owner", b =>
+                {
+                    b.HasOne("ProperHouse.Infrastructure.Data.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("ProperHouse.Infrastructure.Data.Models.Owner", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.Property", b =>
                 {
                     b.HasOne("ProperHouse.Infrastructure.Data.Models.Category", "Category")
@@ -414,11 +452,15 @@ namespace ProperHouse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ProperHouse.Infrastructure.Data.Models.Owner", null)
+                    b.HasOne("ProperHouse.Infrastructure.Data.Models.Owner", "Owner")
                         .WithMany("Properties")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.Reservation", b =>
@@ -429,7 +471,21 @@ namespace ProperHouse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ProperHouse.Infrastructure.Data.Models.User", null)
+                        .WithMany("Reservations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProperHouse.Infrastructure.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Property");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.Category", b =>
@@ -443,6 +499,11 @@ namespace ProperHouse.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.Property", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("ProperHouse.Infrastructure.Data.Models.User", b =>
                 {
                     b.Navigation("Reservations");
                 });

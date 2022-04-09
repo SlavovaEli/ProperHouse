@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProperHouse.Infrastructure.Data.Models;
 
@@ -19,14 +20,38 @@ namespace ProperHouse.Infrastructure.Data
                 .WithMany(p => p.Properties)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Property>()
+                .HasOne(p => p.Owner)
+                .WithMany(o => o.Properties)
+                .HasForeignKey(p => p.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
             
 
             builder
                 .Entity<Reservation>()
                 .HasOne(r => r.Property)
-                .WithMany(r => r.Reservations)
+                .WithMany(p => p.Reservations)
                 .HasForeignKey(r => r.PropertyId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Reservation>()
+                .HasOne<User>()                
+                .WithMany(u => u.Reservations)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+
+            builder
+                .Entity<Owner>()
+                .HasOne<User>()
+                .WithOne()
+                .HasForeignKey<Owner>(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
 
 
             base.OnModelCreating(builder);
