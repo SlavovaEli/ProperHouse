@@ -17,7 +17,7 @@ namespace ProperHouse.Infrastructure.Data.Models
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; init; }
+        public Category Category { get; set; }
 
         [Required]
         [MaxLength(1000)]

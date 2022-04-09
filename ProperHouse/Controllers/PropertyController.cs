@@ -61,11 +61,22 @@ namespace ProperHouse.Controllers
 
         public IActionResult All()
         {
-            var properties = propertyService.GetAllProperties()
-                .OrderByDescending(p => p.Id);
+            var propertiesToList = propertyService.GetAllProperties();                
 
-            return View(properties);
+            return View(propertiesToList);
         }
 
+        public IActionResult Find() => View(new PropertySearchViewModel
+        {
+            Categories = categoryService.GetPropertyCategories(),
+            Towns = propertyService.FindAllTowns()
+        });
+
+        public IActionResult Found([FromQuery]PropertySearchViewModel search)
+        {
+            var foundProperties = propertyService.FindProperties(search);                
+
+            return View(foundProperties);
+        }
     }
 }

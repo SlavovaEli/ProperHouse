@@ -13,5 +13,9 @@ namespace ProperHouse.Core.Contracts
         IList<PropertyListingViewModel> GetAllProperties();
 
         void AddProperty(Property property);
+
+        IList<PropertyListingViewModel> FindProperties(PropertySearchViewModel search);
+
+        IList<string> FindAllTowns();
     }
 }

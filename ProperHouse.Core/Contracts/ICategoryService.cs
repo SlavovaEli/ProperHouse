@@ -12,6 +12,8 @@ namespace ProperHouse.Core.Contracts
         IList<PropertyCategoryViewModel> GetPropertyCategories();
 
         bool CategoryExists(int categoryId);
+
+        string GetCategoryName(int categoryId);
         
     }
 }
