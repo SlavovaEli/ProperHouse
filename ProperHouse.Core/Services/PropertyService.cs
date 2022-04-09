@@ -109,6 +109,6 @@ namespace ProperHouse.Core.Services
                 .OrderByDescending(p => p.Id)
                 .ToList();
 
-        }
+        }        
     }
 }

@@ -29,6 +29,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IOwnerService, OwnerService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>

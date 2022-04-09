@@ -1,0 +1,29 @@
+﻿@model CreateOwnerViewModel
+
+@{
+    ViewData["Title"] = "Become owner";
+}
+
+<div class="container">
+    <div class="raw">
+        <div class="offset-md-2 col-md-8 col-sm-12">
+            <h2 class="text-center">@ViewData["Title"]</h2>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Your fullname here">
+                    <span asp-validation-for="Name" class="small text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="+359 88...">
+                    <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+                </div>             
+                               
+
+                <input type="submit" class="btn btn-secondary" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>

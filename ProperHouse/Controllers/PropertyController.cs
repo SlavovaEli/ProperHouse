@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Models;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
+using ProperHouse.Infrastructure.Extensions;
 
 namespace ProperHouse.Controllers
 {
@@ -11,24 +13,46 @@ namespace ProperHouse.Controllers
         private readonly ICategoryService categoryService;
 
         private readonly IPropertyService propertyService;
+
+        private readonly IOwnerService ownerService;
         
 
-        public PropertyController(IPropertyService _propertyService, ICategoryService _categoryService)
+        public PropertyController(IPropertyService _propertyService, 
+            ICategoryService _categoryService,
+            IOwnerService _ownerService)
         {
             categoryService = _categoryService;
             propertyService = _propertyService;
+            ownerService = _ownerService;
         }
 
-        //public IActionResult Add() => View();
-
-        public IActionResult Add() => View(new PropertyAddViewModel
+        [Authorize]
+        public IActionResult Add() 
         {
-            Categories = categoryService.GetPropertyCategories()
-        });
+            string userId = this.User.GetId();
+
+            if(!ownerService.IsUserOwner(userId))
+            {
+                return RedirectToAction("Create", "Owner");
+            }
+
+            return View(new PropertyAddViewModel
+            {
+                Categories = categoryService.GetPropertyCategories()
+            });
+        }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(PropertyAddViewModel property)
         {
+            string userId = this.User.GetId();            
+
+            if (!ownerService.IsUserOwner(userId))
+            {
+                return RedirectToAction("Create", "Owner");
+            }            
+
             if (categoryService.CategoryExists(property.CategoryId) == false)
             {
                 ModelState.AddModelError(nameof(property.CategoryId), "Category does not exist");
@@ -52,6 +76,7 @@ namespace ProperHouse.Controllers
                 Price = property.Price,
                 Description = property.Description,
                 ImageUrl = property.ImageUrl,
+                OwnerId = ownerService.GetOwnerId(userId)
             };
 
             propertyService.AddProperty(newProperty);
