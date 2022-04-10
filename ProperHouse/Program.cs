@@ -25,6 +25,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
         options.Password.RequireUppercase = false;
 
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ProperHouseDbContext>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();

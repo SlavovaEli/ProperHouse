@@ -11,11 +11,19 @@
     {
         var userId = User.GetId();
         var userIsOwner = OwnerService.IsUserOwner(userId);
+        var userIsAdmin = User.IsInRole("Administrator");
 
-        @if (userIsOwner)
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Favorites">My favorites</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="All">My reservations</a>
+        </li>
+
+        @if (userIsOwner && !userIsAdmin )
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Mine">My Properties</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Mine">My properties</a>
             </li>
         }
         else
