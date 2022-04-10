@@ -50,6 +50,13 @@ namespace ProperHouse.Core.Services
                 .First();
         }
 
+        public Owner GetPropertyOwner(Property property)
+        {
+            return dbContext.Owners
+                .Where(o => o.Id == property.OwnerId)
+                .FirstOrDefault();
+        }
+
         public bool IsUserOwner(string userId)
         {
             return dbContext

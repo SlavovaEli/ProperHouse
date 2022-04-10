@@ -22,5 +22,11 @@ namespace ProperHouse.Core.Contracts
 
         PropertyDetailsViewModel Details(int id);
 
+        Property GetProperty(int id);
+
+        bool PropertyIsOwners(int id, int ownerId);
+
+        bool Edit(int id, PropertyViewModel propertyForm);
+
     }
 }

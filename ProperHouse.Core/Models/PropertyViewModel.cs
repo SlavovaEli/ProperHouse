@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace ProperHouse.Core.Models
 {
-    public class PropertyAddViewModel
+    public class PropertyViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [Display(Name ="Category")]
         public int CategoryId { get; init; }

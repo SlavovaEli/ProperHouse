@@ -58,6 +58,32 @@ namespace ProperHouse.Core.Services
             };
         }
 
+        public bool Edit(int id, PropertyViewModel propertyForm)
+        {
+            var propertyToEdit = dbContext.Properties
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
+
+            if(propertyToEdit == null)
+            {
+                return false;
+            }
+            
+            propertyToEdit.ImageUrl = propertyForm.ImageUrl;
+            propertyToEdit.CategoryId = propertyForm.CategoryId;
+            propertyToEdit.Area = propertyForm.Area;
+            propertyToEdit.Quarter = propertyForm.Quarter;
+            propertyToEdit.Town = propertyForm.Town;
+            propertyToEdit.Price = propertyForm.Price;
+            propertyToEdit.Capacity = propertyForm.Capacity;
+            propertyToEdit.Description = propertyForm.Description;
+            propertyToEdit.Floor = propertyForm.Floor;
+
+            dbContext.SaveChanges();
+
+            return true;
+        }
+
         public IList<string> FindAllTowns()
         {
             return dbContext.Properties
@@ -138,6 +164,12 @@ namespace ProperHouse.Core.Services
 
         }
 
+        public Property GetProperty(int id)
+        {
+            return dbContext.Properties
+                .FirstOrDefault(p => p.Id == id);
+        }
+
         public IList<PropertyListingViewModel> MyProperties(string userId)
         {
             return dbContext.Properties
@@ -151,6 +183,13 @@ namespace ProperHouse.Core.Services
                     Town=p.Town
                 })
                 .ToList();
+        }
+
+        public bool PropertyIsOwners(int id, int ownerId)
+        {
+            var property = this.GetProperty(id);
+
+            return property.OwnerId == ownerId;
         }
     }
 }
