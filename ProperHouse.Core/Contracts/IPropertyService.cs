@@ -16,6 +16,11 @@ namespace ProperHouse.Core.Contracts
 
         IList<PropertyListingViewModel> FindProperties(PropertySearchViewModel search);
 
-        IList<string> FindAllTowns();        
+        IList<string> FindAllTowns();
+
+        IList<PropertyListingViewModel> MyProperties(string userId);
+
+        PropertyDetailsViewModel Details(int id);
+
     }
 }

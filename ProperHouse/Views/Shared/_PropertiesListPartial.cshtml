@@ -1,0 +1,16 @@
+﻿@model List<PropertyListingViewModel>
+
+<div class="row">
+    @foreach (var property in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@property.ImageUrl" class="card-img-top" alt="@property.Category @property.Town">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@property.Category in @property.Town</h5>
+                    <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-light">View property</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

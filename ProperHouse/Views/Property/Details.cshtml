@@ -1,0 +1,31 @@
+﻿@model PropertyDetailsViewModel
+
+@{
+    ViewData["Title"] = "Property details";
+}
+<h3 class="card-title mb-3 text-center">Property Details</h3>
+<div class="card mb-3" style="max-width: 1040px;">
+    <div class="row g-0">
+        <div class="col-md-4 mb-3">
+            <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="@Model.ImageUrl">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h3 class="card-title">@Model.Category in @Model.Quarter - @Model.Town</h3>
+                <h5 class="card-title">Price per nigth: @Model.Price Euro</h5>
+                <p class="card-text">Capacity: @Model.Capacity</p>
+                <p class="card-text">Area: @Model.Area</p>
+                <p class="card-text">Floor: @Model.Floor</p>
+                <p class="card-text"><small class="text-muted">@Model.Description</small></p>
+                <p class="card-text">Owner: @Model.Owner</p>
+                <p class="card-text">Call for reservations: @Model.PhoneNumber</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row col-md-2 offset-md-5">
+    <a asp-controller="Property" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-secondary mb-2">Add to favorites</a>
+    <a asp-controller="Property" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Edit</a>
+    <a asp-controller="Property" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Delete</a>
+</div>
+

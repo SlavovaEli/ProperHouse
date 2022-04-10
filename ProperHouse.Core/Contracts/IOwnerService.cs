@@ -16,5 +16,9 @@ namespace ProperHouse.Core.Contracts
 
         int GetOwnerId(string userId);
 
+        string GetOwnerName(int userId);
+
+        string GetOwnersPhone(int ownerId);
+
     }
 }

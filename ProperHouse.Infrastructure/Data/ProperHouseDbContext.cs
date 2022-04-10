@@ -5,7 +5,7 @@ using ProperHouse.Infrastructure.Data.Models;
 
 namespace ProperHouse.Infrastructure.Data
 {
-    public class ProperHouseDbContext : IdentityDbContext
+    public class ProperHouseDbContext : IdentityDbContext<User>
     {
         public ProperHouseDbContext(DbContextOptions<ProperHouseDbContext> options)
             : base(options)

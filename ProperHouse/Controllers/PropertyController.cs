@@ -103,5 +103,20 @@ namespace ProperHouse.Controllers
 
             return View(foundProperties);
         }
+
+        [Authorize]
+        public IActionResult Mine()
+        {
+            var myProperties = propertyService.MyProperties(this.User.GetId());
+
+            return View(myProperties);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var property = propertyService.Details(id);
+
+            return View(property);
+        }
     }
 }

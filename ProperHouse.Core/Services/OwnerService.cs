@@ -34,6 +34,22 @@ namespace ProperHouse.Core.Services
                 .FirstOrDefault();
         }
 
+        public string GetOwnerName(int ownerId)
+        {
+            var owner = dbContext.Owners
+                .FirstOrDefault(o => o.Id == ownerId);
+
+            return owner.Name;
+        }
+
+        public string GetOwnersPhone(int ownerId)
+        {
+            return dbContext.Owners
+                .Where(x => x.Id == ownerId)
+                .Select(x => x.PhoneNumber)
+                .First();
+        }
+
         public bool IsUserOwner(string userId)
         {
             return dbContext

@@ -1,0 +1,9 @@
+﻿@model List<PropertyListingViewModel>
+
+    @if(!Model.Any())
+    {
+        <h2 class="text-center">You do not have any listed properties!</h2>
+    }
+
+    <partial name="_PropertiesListPartial" model="@Model"/>
+

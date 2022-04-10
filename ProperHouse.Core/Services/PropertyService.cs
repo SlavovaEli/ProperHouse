@@ -16,11 +16,15 @@ namespace ProperHouse.Core.Services
 
         private readonly ICategoryService categoryService;
 
+        private readonly IOwnerService ownerService;
+
         public PropertyService(ProperHouseDbContext _dbContext,
-            ICategoryService _categoryService)
+            ICategoryService _categoryService,
+            IOwnerService _ownerService)
         {
             dbContext = _dbContext;
             categoryService = _categoryService;
+            ownerService = _ownerService;
         }
 
         public void AddProperty(Property property)
@@ -29,6 +33,29 @@ namespace ProperHouse.Core.Services
             dbContext.Properties.Add(property);
             dbContext.SaveChanges();
                        
+        }
+
+        public PropertyDetailsViewModel Details(int id)
+        {
+            var property = dbContext.Properties
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
+
+            return new PropertyDetailsViewModel
+            {
+                Id = property.Id,
+                ImageUrl = property.ImageUrl,
+                Category = categoryService.GetCategoryName(property.CategoryId),
+                Capacity = property.Capacity,
+                Description = property.Description,
+                Area = property.Area,
+                Floor = property.Floor,
+                Owner = ownerService.GetOwnerName(property.OwnerId),
+                Price = property.Price,
+                Quarter = property.Quarter,
+                Town = property.Town,
+                PhoneNumber = ownerService.GetOwnersPhone(property.OwnerId)
+            };
         }
 
         public IList<string> FindAllTowns()
@@ -109,6 +136,21 @@ namespace ProperHouse.Core.Services
                 .OrderByDescending(p => p.Id)
                 .ToList();
 
-        }        
+        }
+
+        public IList<PropertyListingViewModel> MyProperties(string userId)
+        {
+            return dbContext.Properties
+                .Where(p => p.Owner.UserId == userId)
+                .Select(p => new PropertyListingViewModel
+                {
+                    Id=p.Id,
+                    ImageUrl=p.ImageUrl,
+                    Category=p.Category.Name,
+                    Capacity = p.Capacity,
+                    Town=p.Town
+                })
+                .ToList();
+        }
     }
 }
