@@ -1,7 +1,20 @@
-﻿@model PropertyDetailsViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using ProperHouse.Infrastructure.Data.Models
+@using ProperHouse.Core.Contracts
+
+@inject IOwnerService OwnerService
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model PropertyDetailsViewModel
 
 @{
     ViewData["Title"] = "Property details";
+
+    var userId = User.GetId();
+    var userIsAdmin = User.IsAdmin();
+    var userIsOwner = OwnerService.IsUserOwner(userId);
+
 }
 <h3 class="card-title mb-3 text-center">Property Details</h3>
 <div class="card mb-3" style="max-width: 1040px;">
@@ -24,8 +37,14 @@
     </div>
 </div>
 <div class="row col-md-2 offset-md-5">
-    <a asp-controller="Property" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-secondary mb-2">Add to favorites</a>
-    <a asp-controller="Property" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Edit</a>
-    <a asp-controller="Property" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Delete</a>
+    @if (!userIsAdmin)
+    {
+        <a asp-controller="Property" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-secondary mb-2">Add to favorites</a>
+    }
+    @if (userIsAdmin || userIsOwner)
+    {
+        <a asp-controller="Property" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Edit</a>
+        <a asp-controller="Property" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Delete</a>
+    }
 </div>
 

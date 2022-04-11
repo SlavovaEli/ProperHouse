@@ -15,9 +15,9 @@ namespace ProperHouse.Controllers
         private readonly IPropertyService propertyService;
 
         private readonly IOwnerService ownerService;
-        
 
-        public PropertyController(IPropertyService _propertyService, 
+
+        public PropertyController(IPropertyService _propertyService,
             ICategoryService _categoryService,
             IOwnerService _ownerService)
         {
@@ -27,11 +27,11 @@ namespace ProperHouse.Controllers
         }
 
         [Authorize]
-        public IActionResult Add() 
+        public IActionResult Add()
         {
             string userId = this.User.GetId();
 
-            if(!ownerService.IsUserOwner(userId))
+            if (!ownerService.IsUserOwner(userId))
             {
                 return RedirectToAction("Create", "Owner");
             }
@@ -46,12 +46,12 @@ namespace ProperHouse.Controllers
         [Authorize]
         public IActionResult Add(PropertyViewModel property)
         {
-            string userId = this.User.GetId();            
+            string userId = this.User.GetId();
 
             if (!ownerService.IsUserOwner(userId))
             {
                 return RedirectToAction("Create", "Owner");
-            }            
+            }
 
             if (categoryService.CategoryExists(property.CategoryId) == false)
             {
@@ -86,7 +86,7 @@ namespace ProperHouse.Controllers
 
         public IActionResult All()
         {
-            var propertiesToList = propertyService.GetAllProperties();                
+            var propertiesToList = propertyService.GetAllProperties();
 
             return View(propertiesToList);
         }
@@ -97,9 +97,9 @@ namespace ProperHouse.Controllers
             Towns = propertyService.FindAllTowns()
         });
 
-        public IActionResult Found([FromQuery]PropertySearchViewModel search)
+        public IActionResult Found([FromQuery] PropertySearchViewModel search)
         {
-            var foundProperties = propertyService.FindProperties(search);                
+            var foundProperties = propertyService.FindProperties(search);
 
             return View(foundProperties);
         }
@@ -124,7 +124,7 @@ namespace ProperHouse.Controllers
         {
             var userId = this.User.GetId();
 
-            if(!ownerService.IsUserOwner(userId))
+            if (!ownerService.IsUserOwner(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(OwnerController.Create), "Owner");
             }
@@ -133,7 +133,7 @@ namespace ProperHouse.Controllers
 
             var owner = ownerService.GetPropertyOwner(property);
 
-            if(owner.UserId != userId)
+            if(owner.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -163,7 +163,7 @@ namespace ProperHouse.Controllers
         {
             var ownerId = ownerService.GetOwnerId(this.User.GetId());
 
-            if(ownerId == 0)
+            if(ownerId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(OwnerController.Create), "Owner");
             }
@@ -180,7 +180,7 @@ namespace ProperHouse.Controllers
                 return View(property);
             }
 
-            if(!propertyService.PropertyIsOwners(id, ownerId))
+            if(!propertyService.PropertyIsOwners(id, ownerId) && !User.IsAdmin())
             {
                 return Unauthorized();
             }
