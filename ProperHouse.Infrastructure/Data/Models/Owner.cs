@@ -11,7 +11,7 @@ namespace ProperHouse.Infrastructure.Data.Models
     {
         public Owner()
         {
-            Properties = new List<Property>();
+            Properties = new List<Property>();            
         }
 
         [Key]
@@ -25,7 +25,7 @@ namespace ProperHouse.Infrastructure.Data.Models
         [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
-        public IList<Property> Properties { get; set; }
+        public IList<Property> Properties { get; set; }        
 
         [Required]
         public string UserId { get; set; }

@@ -24,6 +24,12 @@ namespace ProperHouse.Core.Services
             return dbContext.Categories.Any(c => c.Id == categoryId);
         }
 
+        public Category GetCategory(int categoryId)
+        {
+            return dbContext.Categories
+                .FirstOrDefault(c => c.Id == categoryId);
+        }
+
         public string GetCategoryName(int categoryId)
         {
             var category = dbContext.Categories.FirstOrDefault(c => c.Id == categoryId);            

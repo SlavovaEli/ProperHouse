@@ -1,4 +1,5 @@
 ﻿using ProperHouse.Core.Models;
+using ProperHouse.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace ProperHouse.Core.Contracts
         bool CategoryExists(int categoryId);
 
         string GetCategoryName(int categoryId);
+
+        Category GetCategory(int categoryId);
         
     }
 }

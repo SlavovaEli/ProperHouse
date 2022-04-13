@@ -191,5 +191,6 @@ namespace ProperHouse.Core.Services
 
             return property.OwnerId == ownerId;
         }
+
     }
 }

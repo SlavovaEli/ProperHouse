@@ -37,9 +37,10 @@
     </div>
 </div>
 <div class="row col-md-2 offset-md-5">
-    @if (!userIsAdmin)
+    @if (!userIsAdmin || !userIsOwner)
     {
-        <a asp-controller="Property" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-secondary mb-2">Add to favorites</a>
+        <a asp-controller="Favorite" asp-action="AddFavorite" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Add to favorites</a>
+        <a asp-controller="Reservation" asp-action="Add" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Make reservation</a>
     }
     @if (userIsAdmin || userIsOwner)
     {

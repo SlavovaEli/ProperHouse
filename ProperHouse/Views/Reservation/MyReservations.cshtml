@@ -1,0 +1,33 @@
+﻿@model IList<MyReservationsViewModel>
+
+@{
+    ViewData["Title"] = "My reservations";
+}
+@if(!Model.Any())
+{
+    <h2 class="text-center">You do not have any reservations!</h2>
+}
+
+@foreach(var res in Model)
+{
+    <h3 class="card-title mb-3 text-center">Reservation Details</h3>
+<div class="card mb-3" style="max-width: 1040px;">
+    <div class="row g-0">
+        <div class="col-md-4 mb-3">
+            <img src="@res.ImageUrl" class="img-fluid rounded-start" alt="@res.ImageUrl">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h3 class="card-title">@res.Category in @res.Quarter - @res.Town</h3>
+                <h5 class="card-title">From: @res.DateFrom to: @res.DateTo</h5>
+                <h5 class="card-title">Price per nigth: @res.Price Euro</h5>                
+                <p class="card-text">Capacity: @res.Capacity</p>                
+                <p class="card-text">Owner: @res.Owner</p>
+                <p class="card-text">Call for more information: @res.PhoneNumber</p>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+

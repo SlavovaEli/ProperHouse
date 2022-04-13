@@ -22,5 +22,7 @@ namespace ProperHouse.Core.Contracts
 
         Owner GetPropertyOwner(Property property);
 
+        Owner GetOwner(int ownerId);
+
     }
 }

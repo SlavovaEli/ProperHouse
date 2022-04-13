@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Models;
+using ProperHouse.Core.Models.Favorite;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
 using ProperHouse.Infrastructure.Extensions;
@@ -16,14 +17,18 @@ namespace ProperHouse.Controllers
 
         private readonly IOwnerService ownerService;
 
+        private readonly IUserService userService;
+
 
         public PropertyController(IPropertyService _propertyService,
             ICategoryService _categoryService,
-            IOwnerService _ownerService)
+            IOwnerService _ownerService,
+            IUserService _userService)
         {
             categoryService = _categoryService;
             propertyService = _propertyService;
             ownerService = _ownerService;
+            userService = _userService;
         }
 
         [Authorize]
@@ -68,6 +73,7 @@ namespace ProperHouse.Controllers
             var newProperty = new Property
             {
                 CategoryId = property.CategoryId,
+                Category = categoryService.GetCategory(property.CategoryId),
                 Town = property.Town,
                 Quarter = property.Quarter,
                 Capacity = property.Capacity,
@@ -76,7 +82,8 @@ namespace ProperHouse.Controllers
                 Price = property.Price,
                 Description = property.Description,
                 ImageUrl = property.ImageUrl,
-                OwnerId = ownerService.GetOwnerId(userId)
+                OwnerId = ownerService.GetOwnerId(userId),
+                Owner = ownerService.GetOwner(ownerService.GetOwnerId(userId))
             };
 
             propertyService.AddProperty(newProperty);
@@ -192,7 +199,9 @@ namespace ProperHouse.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(PropertyController.Mine), "Property");
-        }
+            return RedirectToAction(nameof(PropertyController.Details), "Property", new {@id = id});
+        }       
+               
+        
     }
 }

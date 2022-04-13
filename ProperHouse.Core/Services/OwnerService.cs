@@ -26,6 +26,12 @@ namespace ProperHouse.Core.Services
             dbContext.SaveChanges();
         }
 
+        public Owner GetOwner(int ownerId)
+        {
+            return dbContext.Owners
+                .FirstOrDefault(o => o.Id == ownerId);
+        }
+
         public int GetOwnerId(string userId)
         {
             return dbContext.Owners

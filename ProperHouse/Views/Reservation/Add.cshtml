@@ -1,0 +1,30 @@
+﻿@model ReservationViewModel
+
+@{
+    ViewData["Title"] = "Make reservation";
+}
+
+<div class="container">
+    <div class="raw">
+        <div class="offset-md-2 col-md-8 col-sm-12">
+            <h2 class="text-center">Enter your dates</h2>
+
+            <form method="post">                
+                <div class="mb-3">
+                    <label asp-for="DateFrom" class="form-label"></label>
+                    <input asp-for="DateFrom" class="form-control" placeholder="Formats: dd/MM/yyyy, dd-MM-yyy, dd.MM.yyyy">
+                    <span asp-validation-for="DateFrom" class="small text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DateTo" class="form-label"></label>
+                    <input asp-for="DateTo" class="form-control" placeholder="Formats: dd/MM/yyyy, dd-MM-yyy, dd.MM.yyyy">
+                    <span asp-validation-for="DateTo" class="small text-danger"></span>
+                </div>
+                
+                
+
+                <input type="submit" class="btn btn-secondary" value="Make reservation" />
+            </form>
+        </div>
+    </div>
+</div>

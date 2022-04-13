@@ -27,7 +27,7 @@ namespace ProperHouse.Infrastructure.Data
                 .WithMany(o => o.Properties)
                 .HasForeignKey(p => p.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
 
             builder
                 .Entity<Reservation>()
@@ -38,11 +38,11 @@ namespace ProperHouse.Infrastructure.Data
 
             builder
                 .Entity<Reservation>()
-                .HasOne<User>()                
+                .HasOne<User>()
                 .WithMany(u => u.Reservations)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
 
             builder
                 .Entity<Owner>()
@@ -50,8 +50,6 @@ namespace ProperHouse.Infrastructure.Data
                 .WithOne()
                 .HasForeignKey<Owner>(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
 
 
             base.OnModelCreating(builder);
@@ -64,6 +62,8 @@ namespace ProperHouse.Infrastructure.Data
         public DbSet<Owner> Owners { get; set; }
 
         public DbSet<Reservation> Reservations { get; set; }
+
+        public DbSet<Favorite> Favorites { get; set; }
 
     }
 }

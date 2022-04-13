@@ -31,6 +31,9 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>(); 
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>

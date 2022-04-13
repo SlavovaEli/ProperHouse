@@ -1,13 +1,12 @@
 ﻿@model List<PropertyListingViewModel>
 
 @{
-    ViewData["Title"] = "My Properties";
+    ViewData["Title"] = "My Favorites";
 }
 
 @if (!Model.Any())
 {
-    <h2 class="text-center">You do not have any listed properties!</h2>
+    <h2 class="text-center">You do not have any favorite properties!</h2>
 }
 
 <partial name="_PropertiesListPartial" model="@Model" />
-

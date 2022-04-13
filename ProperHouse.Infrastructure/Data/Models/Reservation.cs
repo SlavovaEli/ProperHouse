@@ -15,21 +15,19 @@ namespace ProperHouse.Infrastructure.Data.Models
         public int Id { get; init; }
 
         [Required]
-        public DateTime DateFrom { get; set; }
+        public string DateFrom { get; set; }
 
         [Required]
-        public DateTime DateTo { get; set; }
+        public string DateTo { get; set; }
         
-        public string UserId { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
-
+        [Required]
+        public string UserId { get; set; }     
+               
         [Required]
         public int PropertyId { get; set; }
 
         [ForeignKey(nameof(PropertyId))]
-        public Property Property { get; set; }
+        public Property Property { get; set; }        
 
     }
 }

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\ProperHouse.Core\ProperHouse.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>
