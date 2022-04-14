@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace ProperHouse.Core.Models.Favorite
 {
     public class MyReservationsViewModel
-    {        
-
+    {
+        public int PropertyId { get; set; }
         public string Category { get; set; }
 
         public string ImageUrl { get; set; }

@@ -67,11 +67,25 @@ namespace ProperHouse.Core.Services
         {
             return dbContext
                 .Owners
-                .Any(p => p.UserId == userId);
+                .Any(o => o.UserId == userId);
+                
         }
 
+        public bool OwnerOfProperty(int ownerId, int propertyId)
+        {
+            return dbContext
+                .Properties
+                .Any(p => p.Id == propertyId && p.OwnerId == ownerId);
 
+        }
 
-        
+        public int OwnerByUser(string userId)
+        {
+            return dbContext.Owners
+                .Where(o => o.UserId == userId)
+                .Select(o => o.Id)
+                .FirstOrDefault();
+        }
+
     }
 }

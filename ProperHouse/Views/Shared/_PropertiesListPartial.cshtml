@@ -1,6 +1,13 @@
-﻿@model List<PropertyListingViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
 
-<div class="row">
+@model List<PropertyListingViewModel>
+
+@if(!SignInManager.IsSignedIn(User))
+    {
+        <h2 class="card-title text-center mb-4">Please register to see our properties</h2>
+    }  
+<div class="row">      
     @foreach (var property in Model)
     {
         <div class="col-md-4">
@@ -8,7 +15,11 @@
                 <img src="@property.ImageUrl" class="card-img-top" alt="@property.Category @property.Town">
                 <div class="card-body text-center">
                     <h5 class="card-title">@property.Category in @property.Town</h5>
-                    <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-light">View property</a>
+                    @if(SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-light">View property</a>
+                    }                  
+
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@
                 <div class="mb-3">
                     <label asp-for="CategoryId" class="form-label"></label>
                     <select asp-for="CategoryId" class="form-select">
-                        <option value="0" selected>All</option>
+                        <option value="All" selected>All</option>
                         @foreach(var category in Model.Categories)
                         {
                             <option value="@category.Id">@category.Name</option>

@@ -3,6 +3,7 @@
 @using ProperHouse.Core.Contracts
 
 @inject IOwnerService OwnerService
+@inject IPropertyService PropertyService
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -13,7 +14,7 @@
 
     var userId = User.GetId();
     var userIsAdmin = User.IsAdmin();
-    var userIsOwner = OwnerService.IsUserOwner(userId);
+    var userIsOwner = OwnerService.OwnerOfProperty(OwnerService.OwnerByUser(userId), @Model.Id);
 
 }
 <h3 class="card-title mb-3 text-center">Property Details</h3>
@@ -37,7 +38,7 @@
     </div>
 </div>
 <div class="row col-md-2 offset-md-5">
-    @if (!userIsAdmin || !userIsOwner)
+    @if (!userIsAdmin && !userIsOwner)
     {
         <a asp-controller="Favorite" asp-action="AddFavorite" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Add to favorites</a>
         <a asp-controller="Reservation" asp-action="Add" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Make reservation</a>

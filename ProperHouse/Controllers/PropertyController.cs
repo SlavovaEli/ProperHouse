@@ -104,7 +104,7 @@ namespace ProperHouse.Controllers
             Towns = propertyService.FindAllTowns()
         });
 
-        public IActionResult Found([FromQuery] PropertySearchViewModel search)
+        public IActionResult Found(PropertySearchViewModel search)
         {
             var foundProperties = propertyService.FindProperties(search);
 
@@ -118,12 +118,12 @@ namespace ProperHouse.Controllers
 
             return View(myProperties);
         }
-
+        
         public IActionResult Details(int id)
         {
-            var property = propertyService.Details(id);
+            var propertyModel= propertyService.Details(id);
 
-            return View(property);
+            return View(propertyModel);
         }
 
         [Authorize]

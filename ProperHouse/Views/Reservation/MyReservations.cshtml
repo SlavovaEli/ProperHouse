@@ -24,6 +24,7 @@
                 <p class="card-text">Capacity: @res.Capacity</p>                
                 <p class="card-text">Owner: @res.Owner</p>
                 <p class="card-text">Call for more information: @res.PhoneNumber</p>
+                <a asp-controller="Property" asp-action="Details" asp-route-id="@res.PropertyId" class="btn btn-secondary offset-4">View property</a>
             </div>
         </div>
     </div>

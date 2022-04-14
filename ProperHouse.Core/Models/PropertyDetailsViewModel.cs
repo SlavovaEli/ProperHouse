@@ -30,6 +30,8 @@ namespace ProperHouse.Core.Models
 
         public string Owner { get; set; }
 
+        public int OwnerId { get; set; }
+
         public string PhoneNumber { get; set; }
     }
 }

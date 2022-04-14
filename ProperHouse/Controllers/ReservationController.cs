@@ -73,7 +73,8 @@ namespace ProperHouse.Controllers
 
             var reservationsView = userReservations
                 .Select(r => new MyReservationsViewModel
-                {                    
+                {  
+                    PropertyId = r.PropertyId,
                     ImageUrl = r.Property.ImageUrl,
                     Category = r.Property.Category.Name,
                     Town = r.Property.Town,

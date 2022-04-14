@@ -14,8 +14,7 @@ namespace ProperHouse.Core.Models.Reservation
         public int Id { get; init; }
 
         [Required]
-        [Display(Name ="From Date:")]        
-        [StringLength(30, MinimumLength = 10, ErrorMessage ="Please use the asked date format")]
+        [Display(Name ="From Date:")]                
         [RegularExpression(@"/(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)
                             (?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)
                             0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|
@@ -25,8 +24,7 @@ namespace ProperHouse.Core.Models.Reservation
         public string DateFrom { get; set; }
 
         [Required]
-        [Display(Name ="To Date:")]        
-        [StringLength(30, MinimumLength = 10, ErrorMessage = "Please use the asked date format")]
+        [Display(Name ="To Date:")]                
         [RegularExpression(@"/(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)
                             (?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)
                             0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|

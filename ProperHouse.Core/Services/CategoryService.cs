@@ -50,6 +50,7 @@ namespace ProperHouse.Core.Services
                     Id = c.Id,
                     Name = c.Name,
                 })
+                .OrderBy(c => c.Id)
                 .ToList();
         }
 

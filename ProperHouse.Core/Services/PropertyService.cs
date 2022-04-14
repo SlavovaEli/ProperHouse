@@ -51,6 +51,7 @@ namespace ProperHouse.Core.Services
                 Area = property.Area,
                 Floor = property.Floor,
                 Owner = ownerService.GetOwnerName(property.OwnerId),
+                OwnerId = property.OwnerId,
                 Price = property.Price,
                 Quarter = property.Quarter,
                 Town = property.Town,
@@ -107,7 +108,7 @@ namespace ProperHouse.Core.Services
             if (search.CategoryId != 0)
             {
                 propertiesQuery = propertiesQuery
-                    .Where(p => p.CategoryId == search.CategoryId)
+                    .Where(p => p.CategoryId == search.CategoryId)                    
                     .ToList();
             }            
 
@@ -139,7 +140,7 @@ namespace ProperHouse.Core.Services
                     ImageUrl = p.ImageUrl,
                     Capacity = p.Capacity,
                     Town = p.Town,
-                    Category = categoryService.GetCategoryName(search.CategoryId),
+                    Category = categoryService.GetCategoryName(p.CategoryId),
                 })
                 .OrderByDescending(p => p.Id)
                 .ToList();
