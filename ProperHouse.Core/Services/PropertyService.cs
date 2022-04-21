@@ -197,6 +197,7 @@ namespace ProperHouse.Core.Services
                     Category = p.Category.Name,
                     Town = p.Town,
                     Capacity = p.Capacity,
+                    IsPublic = p.IsPublic
                 })
                 .OrderByDescending(p => p.Id)
                 .ToList();
@@ -231,5 +232,14 @@ namespace ProperHouse.Core.Services
             return property.OwnerId == ownerId;
         }
 
+        public void Approve(int id)
+        {
+            var property = dbContext.Properties.Find(id);
+
+            property.IsPublic = !property.IsPublic;
+
+            dbContext.SaveChanges();
+
+        }
     }
 }

@@ -30,5 +30,7 @@ namespace ProperHouse.Core.Contracts
 
         bool Edit(int id, bool isAdmin, PropertyViewModel propertyForm);
 
+        void Approve(int id);
+
     }
 }

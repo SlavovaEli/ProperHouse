@@ -17,5 +17,12 @@ namespace ProperHouse.Areas.Admin.Controllers
 
             return View(properties);
         }
+
+        public IActionResult Approve(int id)
+        {
+            propertyService.Approve(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

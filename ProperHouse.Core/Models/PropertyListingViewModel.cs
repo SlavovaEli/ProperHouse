@@ -23,5 +23,7 @@ namespace ProperHouse.Core.Models
 
 
         public int Capacity { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }

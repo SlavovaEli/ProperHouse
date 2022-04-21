@@ -13,19 +13,21 @@
             <th scope="col">Category</th>
             <th scope="col">Town</th>
             <th scope="col">Capacity</th>
+            <th scope="col">Approved</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var car in Model)
+        @foreach (var prop in Model)
         {
         <tr>
-            <td scope="col">@car.Id</td>
-            <td scope="col">@car.Category</td>
-            <td scope="col">@car.Town</td>
-            <td scope="col">@car.Capacity</td>
+            <td scope="col">@prop.Id</td>
+            <td scope="col">@prop.Category</td>
+            <td scope="col">@prop.Town</td>
+            <td scope="col">@prop.Capacity</td>
+            <td scope="col">@(prop.IsPublic ? "YES" : "NO")</td>
             <td scope="col">                
-                <a asp-area="" asp-controller="Property" asp-action="Details" asp-route-id="@car.Id" class="btn btn-warning ml-2">Details</a>
-                <a asp-area="Admin" asp-controller="Property" asp-action="Delete" asp-route-id="@car.Id" class="btn btn-warning ml-2">Show</a>
+                <a asp-area="" asp-controller="Property" asp-action="Details" asp-route-id="@prop.Id" class="btn btn-warning ml-2">Details</a>
+                <a asp-area="Admin" asp-controller="Property" asp-action="Approve" asp-route-id="@prop.Id" class="btn btn-warning ml-2">@(prop.IsPublic ? "Hide" : "Approve")</a>
             </td>
         </tr>
         }
