@@ -11,7 +11,9 @@ namespace ProperHouse.Infrastructure.Data.Models
     public class Property
     {
         [Key]
-        public int Id { get; init; }        
+        public int Id { get; init; }
+
+        public bool IsPublic { get; set; }
 
         [Required]        
         public int CategoryId { get; set; }

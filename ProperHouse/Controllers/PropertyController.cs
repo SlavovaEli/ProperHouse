@@ -6,6 +6,7 @@ using ProperHouse.Core.Models.Favorite;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
 using ProperHouse.Infrastructure.Extensions;
+using ProperHouse.Core.Constants;
 
 namespace ProperHouse.Controllers
 {
@@ -68,32 +69,18 @@ namespace ProperHouse.Controllers
                 property.Categories = categoryService.GetPropertyCategories();
 
                 return View(property);
-            }
+            }            
 
-            var newProperty = new Property
-            {
-                CategoryId = property.CategoryId,
-                Category = categoryService.GetCategory(property.CategoryId),
-                Town = property.Town,
-                Quarter = property.Quarter,
-                Capacity = property.Capacity,
-                Area = property.Area,
-                Floor = property.Floor,
-                Price = property.Price,
-                Description = property.Description,
-                ImageUrl = property.ImageUrl,
-                OwnerId = ownerService.GetOwnerId(userId),
-                Owner = ownerService.GetOwner(ownerService.GetOwnerId(userId))
-            };
+            var propertyId = propertyService.AddProperty(userId, property);
 
-            propertyService.AddProperty(newProperty);
+            TempData[WebConstants.MessageKey] = "Your property is waiting for approval!";
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = propertyId});
         }
 
         public IActionResult All()
         {
-            var propertiesToList = propertyService.GetAllProperties();
+            var propertiesToList = propertyService.GetPublicProperties();
 
             return View(propertiesToList);
         }
@@ -129,7 +116,7 @@ namespace ProperHouse.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var userId = this.User.GetId();
+            var userId = User.GetId();
 
             if (!ownerService.IsUserOwner(userId) && !User.IsAdmin())
             {
@@ -192,14 +179,22 @@ namespace ProperHouse.Controllers
                 return Unauthorized();
             }
 
-            var edited = propertyService.Edit(id, property);
+            bool isAdmin = User.IsAdmin();
+
+            var edited = propertyService.Edit(id, isAdmin, property);
 
             if(!edited)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(PropertyController.Details), "Property", new {@id = id});
+            if(!isAdmin)
+            {
+                TempData[WebConstants.MessageKey] = "Your property was editted and is waiting for approval!";
+            }
+            
+
+            return RedirectToAction(nameof(PropertyController.Details), new {id = id});
         }       
                
         

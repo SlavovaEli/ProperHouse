@@ -12,15 +12,21 @@
         var userId = User.GetId();
         var userIsOwner = OwnerService.IsUserOwner(userId);
         var userIsAdmin = User.IsAdmin();
-        @if(!userIsAdmin)
+        @if (!userIsAdmin)
         {
             <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Favorite" asp-action="MyFavorites">My favorites</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="MyReservations">My reservations</a>
-        </li>
-        }       
+                <a class="nav-link text-dark" asp-area="" asp-controller="Favorite" asp-action="MyFavorites">My favorites</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="MyReservations">My reservations</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Property" asp-action="All">Admin</a>
+            </li>
+        }
 
         @if (userIsOwner)
         {
@@ -28,7 +34,7 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Mine">My properties</a>
             </li>
         }
-        @if(!userIsOwner && !userIsAdmin)
+        @if (!userIsOwner && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Create">Become Owner</a>

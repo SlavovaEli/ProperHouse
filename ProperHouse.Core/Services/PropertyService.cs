@@ -26,12 +26,30 @@ namespace ProperHouse.Core.Services
             categoryService = _categoryService;
             ownerService = _ownerService;
         }
+                
+        public int AddProperty(string userId, PropertyViewModel propertyModel)
+        {
+            var newProperty = new Property
+            {
+                CategoryId = propertyModel.CategoryId,
+                Category = categoryService.GetCategory(propertyModel.CategoryId),
+                Town = propertyModel.Town,
+                Quarter = propertyModel.Quarter,
+                Capacity = propertyModel.Capacity,
+                Area = propertyModel.Area,
+                Floor = propertyModel.Floor,
+                Price = propertyModel.Price,
+                Description = propertyModel.Description,
+                ImageUrl = propertyModel.ImageUrl,
+                OwnerId = ownerService.GetOwnerId(userId),
+                Owner = ownerService.GetOwner(ownerService.GetOwnerId(userId)),
+                IsPublic = false
+            };
 
-        public void AddProperty(Property property)
-        {           
-
-            dbContext.Properties.Add(property);
+            dbContext.Properties.Add(newProperty);
             dbContext.SaveChanges();
+
+            return newProperty.Id;
                        
         }
 
@@ -55,11 +73,11 @@ namespace ProperHouse.Core.Services
                 Price = property.Price,
                 Quarter = property.Quarter,
                 Town = property.Town,
-                PhoneNumber = ownerService.GetOwnersPhone(property.OwnerId)
+                PhoneNumber = ownerService.GetOwnersPhone(property.OwnerId)                
             };
         }
 
-        public bool Edit(int id, PropertyViewModel propertyForm)
+        public bool Edit(int id, bool isAdmin, PropertyViewModel propertyForm)
         {
             var propertyToEdit = dbContext.Properties
                 .Where(p => p.Id == id)
@@ -79,6 +97,7 @@ namespace ProperHouse.Core.Services
             propertyToEdit.Capacity = propertyForm.Capacity;
             propertyToEdit.Description = propertyForm.Description;
             propertyToEdit.Floor = propertyForm.Floor;
+            propertyToEdit.IsPublic = isAdmin;            
 
             dbContext.SaveChanges();
 
@@ -96,7 +115,9 @@ namespace ProperHouse.Core.Services
 
         public IList<PropertyListingViewModel> FindProperties(PropertySearchViewModel search)
         {
-            var propertiesQuery = dbContext.Properties.ToList();
+            var propertiesQuery = dbContext.Properties
+                .Where(p => p.IsPublic == true)
+                .ToList();
 
             if (search.Town != "All")
             {
@@ -149,9 +170,26 @@ namespace ProperHouse.Core.Services
                 
         }
 
+        public IList<PropertyListingViewModel> GetPublicProperties()
+        {
+            return dbContext.Properties 
+                .Where(p => p.IsPublic == true)
+                .Select(p => new PropertyListingViewModel
+                {
+                    Id = p.Id,
+                    ImageUrl = p.ImageUrl,
+                    Category = p.Category.Name,
+                    Town = p.Town,
+                    Capacity = p.Capacity,
+                })
+                .OrderByDescending(p => p.Id)
+                .ToList();
+
+        }
+
         public IList<PropertyListingViewModel> GetAllProperties()
         {
-            return dbContext.Properties
+            return dbContext.Properties                
                 .Select(p => new PropertyListingViewModel
                 {
                     Id = p.Id,

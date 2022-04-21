@@ -12,7 +12,9 @@ namespace ProperHouse.Core.Contracts
     {
         IList<PropertyListingViewModel> GetAllProperties();
 
-        void AddProperty(Property property);
+        IList<PropertyListingViewModel> GetPublicProperties();
+
+        int AddProperty(string userId, PropertyViewModel propertyModel);
 
         IList<PropertyListingViewModel> FindProperties(PropertySearchViewModel search);
 
@@ -26,7 +28,7 @@ namespace ProperHouse.Core.Contracts
 
         bool PropertyIsOwners(int id, int ownerId);
 
-        bool Edit(int id, PropertyViewModel propertyForm);
+        bool Edit(int id, bool isAdmin, PropertyViewModel propertyForm);
 
     }
 }
