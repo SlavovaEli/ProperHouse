@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Models.Favorite;
@@ -34,6 +35,7 @@ namespace ProperHouse.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(int id, ReservationViewModel reservation)
         {
             var userId = User.GetId();           
@@ -62,33 +64,19 @@ namespace ProperHouse.Controllers
             var userId = User.GetId();
 
             var userReservations = reservationService.GetUserReservations(userId);
+            
 
-            foreach (var res in userReservations)
-            {
-                var property = propertyService.GetProperty(res.PropertyId);
-                property.Category = categoryService.GetCategory(property.CategoryId);
-                property.Owner = ownerService.GetOwner(property.OwnerId);
-                res.Property = property;
-            }
+            return View(userReservations);
+        }      
 
-            var reservationsView = userReservations
-                .Select(r => new MyReservationsViewModel
-                {  
-                    PropertyId = r.PropertyId,
-                    ImageUrl = r.Property.ImageUrl,
-                    Category = r.Property.Category.Name,
-                    Town = r.Property.Town,
-                    Quarter = r.Property.Quarter,
-                    PhoneNumber = r.Property.Owner.PhoneNumber,
-                    Price = r.Property.Price,
-                    Capacity = r.Property.Capacity,
-                    DateFrom = r.DateFrom,
-                    DateTo = r.DateTo,
-                    Owner = r.Property.Owner.Name
-                })
-                .ToList();
+        
+        public IActionResult Cancel(int id)
+        {
+            var userId = User.GetId();
 
-            return View(reservationsView);
+            reservationService.Cancel(userId, id);
+
+            return RedirectToAction(nameof(MyReservations));
         }
     }
 }

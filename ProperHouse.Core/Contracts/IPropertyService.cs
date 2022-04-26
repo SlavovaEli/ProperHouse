@@ -32,5 +32,6 @@ namespace ProperHouse.Core.Contracts
 
         void Approve(int id);
 
+        void Delete(string userId, int id);
     }
 }

@@ -80,5 +80,14 @@ namespace ProperHouse.Controllers
 
             return View(favoriteModel);
         }
+
+
+        public IActionResult RemoveFavorite(int id)
+        {
+            var userId = User.GetId();
+            favoriteService.Remove(userId, id);
+
+            return RedirectToAction(nameof(MyFavorites));
+        }
     }
 }

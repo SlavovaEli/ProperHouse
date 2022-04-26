@@ -8,7 +8,10 @@ namespace ProperHouse.Core.Models.Favorite
 {
     public class MyReservationsViewModel
     {
+        public int ReservationId { get; set; }
+
         public int PropertyId { get; set; }
+
         public string Category { get; set; }
 
         public string ImageUrl { get; set; }

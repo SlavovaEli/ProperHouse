@@ -1,4 +1,5 @@
-﻿using ProperHouse.Core.Models.Reservation;
+﻿using ProperHouse.Core.Models.Favorite;
+using ProperHouse.Core.Models.Reservation;
 using ProperHouse.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,11 @@ namespace ProperHouse.Core.Contracts
     {
         void MakeReservation(Reservation reservation);
 
-        IList<Reservation> GetUserReservations(string id);
-        
+        IList<MyReservationsViewModel> GetUserReservations(string id);
+
+        MyReservationsViewModel GetReservation(int id);
+
+        void Cancel(string userId, int reservationId);
+
     }
 }

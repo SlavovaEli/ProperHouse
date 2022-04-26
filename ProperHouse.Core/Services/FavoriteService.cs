@@ -42,5 +42,24 @@ namespace ProperHouse.Core.Services
 
             return userFavorites;
         }
+
+        public bool IsUsersFavorite(string userId, int propertyId)
+        {
+            return dbContext.Favorites
+                .Any(f => f.UserId == userId && f.PropertyId == propertyId);
+        }
+
+        public void Remove(string userId, int propertyId)
+        {
+            var favorite = dbContext.Favorites
+                .Where(f => f.UserId == userId && f.PropertyId == propertyId)
+                .FirstOrDefault();
+
+            if (favorite != null)
+            {
+                dbContext.Favorites.Remove(favorite);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

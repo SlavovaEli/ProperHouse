@@ -1,4 +1,5 @@
 ﻿using ProperHouse.Core.Contracts;
+using ProperHouse.Core.Models.Favorite;
 using ProperHouse.Core.Models.Reservation;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
@@ -16,18 +17,74 @@ namespace ProperHouse.Core.Services
 
         private readonly IPropertyService propertyService;
 
+        private readonly ICategoryService categoryService;
+
+        private readonly IOwnerService ownerService;
+
         public ReservationService(ProperHouseDbContext _dbContext,
-            IPropertyService _propertyService)
+            IPropertyService _propertyService,
+            ICategoryService _categoryService,
+            IOwnerService _ownerService)
         {
             dbContext = _dbContext;
             propertyService = _propertyService;
+            categoryService = _categoryService;
+            ownerService = _ownerService;
         }
 
-        public IList<Reservation> GetUserReservations(string id)
+        public void Cancel(string userId, int reservationId)
         {
-            return dbContext.Reservations
+            var reservation = dbContext.Reservations.Find(reservationId);
+            var user = dbContext.Users.Find(userId);            
+            
+            user.Reservations.Remove(reservation);
+            dbContext.Reservations.Remove(reservation);
+            dbContext.SaveChanges();            
+
+        }
+
+        public MyReservationsViewModel GetReservation(int id)
+        {
+            var reservation = dbContext.Reservations.Find(id);
+
+            var property = propertyService.GetProperty(reservation.PropertyId);
+            property.Category = categoryService.GetCategory(property.CategoryId);
+            property.Owner = ownerService.GetOwner(property.OwnerId);
+            reservation.Property = property;
+
+            var reservationView = new MyReservationsViewModel
+            {
+                ReservationId = reservation.Id,
+                PropertyId = reservation.PropertyId,
+                ImageUrl = reservation.Property.ImageUrl,
+                Category = reservation.Property.Category.Name,
+                Town = reservation.Property.Town,
+                Quarter = reservation.Property.Quarter,
+                PhoneNumber = reservation.Property.Owner.PhoneNumber,
+                Price = reservation.Property.Price,
+                Capacity = reservation.Property.Capacity,
+                DateFrom = reservation.DateFrom,
+                DateTo = reservation.DateTo,
+                Owner = reservation.Property.Owner.Name
+            };
+
+            return reservationView;
+        }
+
+        public IList<MyReservationsViewModel> GetUserReservations(string id)
+        {
+            List<MyReservationsViewModel> userReservationsViews = new List<MyReservationsViewModel>();   
+
+            var userReservations =  dbContext.Reservations
                 .Where(r => r.UserId == id)
                 .ToList();
+
+            foreach (var res in userReservations)
+            {
+                userReservationsViews.Add(GetReservation(res.Id));
+            }            
+
+            return userReservationsViews;
         }
 
         public void MakeReservation(Reservation reservation)

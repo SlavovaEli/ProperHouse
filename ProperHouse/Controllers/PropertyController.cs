@@ -197,6 +197,18 @@ namespace ProperHouse.Controllers
             return RedirectToAction(nameof(PropertyController.Details), new {id = id});
         }       
                
-        
+        public IActionResult Delete(int id)
+        {
+            var userId = User.GetId();  
+
+            propertyService.Delete(userId, id);
+
+            if(User.IsAdmin())
+            {
+                return RedirectToAction("All", "Property", new { area = "Admin" });
+            }
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

@@ -12,5 +12,9 @@ namespace ProperHouse.Core.Contracts
         void AddToFavorites(Favorite favorite);
 
         IList<Property> GetFavorites(string userId);
+
+        bool IsUsersFavorite(string userId, int propertyId);
+
+        void Remove(string userId, int propertyId);
     }
 }

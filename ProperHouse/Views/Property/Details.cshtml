@@ -3,6 +3,7 @@
 @using ProperHouse.Core.Contracts
 
 @inject IOwnerService OwnerService
+@inject IFavoriteService FavoriteService
 @inject IPropertyService PropertyService
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -14,6 +15,7 @@
 
     var userId = User.GetId();
     var userIsAdmin = User.IsAdmin();
+    var IsFavorite = FavoriteService.IsUsersFavorite(userId, Model.Id);
     var userIsOwner = OwnerService.OwnerOfProperty(OwnerService.OwnerByUser(userId), @Model.Id);
 
 }
@@ -40,7 +42,15 @@
 <div class="row col-md-2 offset-md-5">
     @if (!userIsAdmin && !userIsOwner)
     {
-        <a asp-controller="Favorite" asp-action="AddFavorite" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Add to favorites</a>
+        @if(!IsFavorite)
+        {
+            <a asp-controller="Favorite" asp-action="AddFavorite" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Add to favorites</a>
+        }
+        else
+        {
+            <a asp-controller="Favorite" asp-action="RemoveFavorite" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Remove from favorites</a>
+        }
+
         <a asp-controller="Reservation" asp-action="Add" asp-route-id="@Model.Id"  class="btn btn-secondary mb-2">Make reservation</a>
     }
     @if (userIsAdmin || userIsOwner)

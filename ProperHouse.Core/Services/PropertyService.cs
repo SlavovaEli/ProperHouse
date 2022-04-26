@@ -241,5 +241,40 @@ namespace ProperHouse.Core.Services
             dbContext.SaveChanges();
 
         }
+
+        public void Delete(string userId, int id)
+        {
+            var currentUser = dbContext.Users.Find(userId);
+            var propertyToDelete = dbContext.Properties.Find(id);
+
+            var propertyReservations = dbContext.Reservations
+                .Where(r => r.PropertyId == id)
+                .ToList();
+
+            var propertyFavorites = dbContext.Favorites
+                .Where(f => f.PropertyId == id)
+                .ToList();
+
+            foreach (var user in dbContext.Users)
+            {
+                var reservations = user.Reservations
+                    .Where(r => r.PropertyId == id)
+                    .ToList();
+
+                foreach (var res in reservations)
+                {
+                    user.Reservations.Remove(res);
+                }
+            }
+
+            var owner = ownerService.GetPropertyOwner(propertyToDelete);
+            owner.Properties.Remove(propertyToDelete);
+
+            dbContext.Reservations.RemoveRange(propertyReservations);
+            dbContext.Favorites.RemoveRange(propertyFavorites);
+            dbContext.Properties.Remove(propertyToDelete);
+            dbContext.SaveChanges();
+
+        }
     }
 }
