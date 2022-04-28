@@ -35,9 +35,11 @@ namespace ProperHouse.Core.Services
         public void Cancel(string userId, int reservationId)
         {
             var reservation = dbContext.Reservations.Find(reservationId);
-            var user = dbContext.Users.Find(userId);            
+            var user = dbContext.Users.Find(userId);
+            var property = dbContext.Properties.Find(reservation.PropertyId);
             
             user.Reservations.Remove(reservation);
+            property.Reservations.Remove(reservation);
             dbContext.Reservations.Remove(reservation);
             dbContext.SaveChanges();            
 
