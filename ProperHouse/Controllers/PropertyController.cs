@@ -106,6 +106,7 @@ namespace ProperHouse.Controllers
             return View(myProperties);
         }
         
+        [Authorize]
         public IActionResult Details(int id)
         {
             var propertyModel= propertyService.Details(id);
@@ -195,8 +196,9 @@ namespace ProperHouse.Controllers
             
 
             return RedirectToAction(nameof(PropertyController.Details), new {id = id});
-        }       
-               
+        }
+
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var userId = User.GetId();  

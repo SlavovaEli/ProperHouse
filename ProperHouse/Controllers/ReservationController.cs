@@ -34,8 +34,7 @@ namespace ProperHouse.Controllers
             return View();
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]        
         public IActionResult Add(int id, ReservationViewModel reservation)
         {
             var userId = User.GetId();           

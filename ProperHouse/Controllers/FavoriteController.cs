@@ -8,7 +8,7 @@ using ProperHouse.Infrastructure.Extensions;
 
 namespace ProperHouse.Controllers
 {
-    public class FavoriteController : Controller
+    public class FavoriteController : BaseController
     {
         private readonly IFavoriteService favoriteService;
 

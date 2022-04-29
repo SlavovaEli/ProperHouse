@@ -8,20 +8,18 @@ using ProperHouse.Infrastructure.Extensions;
 
 namespace ProperHouse.Controllers
 {
-    public class OwnerController : Controller
+    public class OwnerController : BaseController
     {
         private readonly IOwnerService ownerService;
 
         public OwnerController(IOwnerService _ownerService)
         {
             ownerService = _ownerService;
-        }
-                   
+        }                  
 
-        [Authorize]
+        
         public IActionResult Create() => View();
-
-        [Authorize]
+        
         [HttpPost]
         public IActionResult Create(CreateOwnerViewModel owner)
         {
