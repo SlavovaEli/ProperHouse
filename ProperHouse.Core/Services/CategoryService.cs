@@ -1,4 +1,5 @@
-﻿using ProperHouse.Core.Contracts;
+﻿using Microsoft.Extensions.Caching.Memory;
+using ProperHouse.Core.Contracts;
 using ProperHouse.Core.Models;
 using ProperHouse.Infrastructure.Data;
 using ProperHouse.Infrastructure.Data.Models;
@@ -7,7 +8,7 @@ namespace ProperHouse.Core.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ProperHouseDbContext dbContext;
+        private readonly ProperHouseDbContext dbContext;        
 
         public CategoryService(ProperHouseDbContext _dbContext)
         {

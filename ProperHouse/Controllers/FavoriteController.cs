@@ -24,8 +24,7 @@ namespace ProperHouse.Controllers
             favoriteService = _favoriteService;
             categoryService = _categoryService;
         }
-
-        [Authorize]
+        
         public IActionResult AddFavorite(int id)
         {
             var userId = this.User.GetId();
@@ -46,8 +45,7 @@ namespace ProperHouse.Controllers
 
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]        
         public IActionResult AddFavorite(int id, [FromForm] FavoriteViewModel form)
         {
             var userId = User.GetId();

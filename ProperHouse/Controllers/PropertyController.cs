@@ -13,13 +13,9 @@ namespace ProperHouse.Controllers
     public class PropertyController : Controller
     {
         private readonly ICategoryService categoryService;
-
         private readonly IPropertyService propertyService;
-
         private readonly IOwnerService ownerService;
-
         private readonly IUserService userService;
-
 
         public PropertyController(IPropertyService _propertyService,
             ICategoryService _categoryService,

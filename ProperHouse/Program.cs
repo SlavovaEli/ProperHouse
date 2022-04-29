@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProperHouse.Core.Constants;
 using ProperHouse.Core.Contracts;
@@ -28,6 +29,8 @@ builder.Services.AddDefaultIdentity<User>(options =>
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ProperHouseDbContext>();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
@@ -35,13 +38,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>(); 
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
-builder.Services.AddControllersWithViews()
-    .AddMvcOptions(options =>
-    {
-        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormatingConstant.NormalDateFormat));
-        options.ModelBinderProviders.Insert(1, new DecimalModelBinderProvider());
-        options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
-    });
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
 
 var app = builder.Build();
 
@@ -50,12 +50,12 @@ app.PrepareDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Home/Error");    
     app.UseHsts();
 }
 
