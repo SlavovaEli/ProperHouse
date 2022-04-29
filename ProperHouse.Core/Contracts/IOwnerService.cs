@@ -1,10 +1,4 @@
-﻿using ProperHouse.Core.Models.Owner;
-using ProperHouse.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProperHouse.Infrastructure.Data.Models;
 
 namespace ProperHouse.Core.Contracts
 {
